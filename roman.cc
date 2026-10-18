@@ -29,11 +29,20 @@ std::string convert(int n) {
       remainder -= symbol.value;
       ++count;
     }
-    if (count >= 4 && i > 0) {
-      const auto &previous = kSymbols[i - 1];
-      int diff = previous.value - count * symbol.value;
-      result += std::string(diff / symbol.value, symbol.letter);
-      result.push_back(previous.letter);
+    if (count >= 4 && i > 1) {
+      const auto &previous1 = kSymbols[i - 1];
+      const auto &previous2 = kSymbols[i - 2];
+      int diff1 = previous1.value - count * symbol.value;
+      int diff2 = previous2.value - count * symbol.value;
+      int minus_count1 = diff1 / symbol.value;
+      int minus_count2 = diff2 / symbol.value;
+      if (minus_count1 < minus_count2) {
+        result += std::string(minus_count1, symbol.letter);
+        result.push_back(previous1.letter);
+      } else {
+        result += std::string(minus_count2, symbol.letter);
+        result.push_back(previous2.letter);
+      }
     } else {
       result += std::string(count, symbol.letter);
     }
